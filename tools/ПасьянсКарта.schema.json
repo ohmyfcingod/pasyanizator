@@ -1,0 +1,186 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ПасьянсКарта v1.2 — нормативный контракт экстрактор → генератор (v1.2: допСведения-массив объектов с решением реквизитОбъекта/остаётсяВРС, итоги.сведений* — такт 5 П4; v1.1: статистика заполненности, причины прореживания, предупрежденияВыбора — такт 4 П2)",
+  "type": "object",
+  "required": ["schemaVersion", "экстрактор", "итоги", "виды"],
+  "properties": {
+    "schemaVersion": { "type": "string", "pattern": "^1\\." },
+    "экстрактор": {
+      "type": "object",
+      "required": ["версия", "дата", "база", "версияКонфы"],
+      "properties": {
+        "версия": { "type": "string" },
+        "дата": { "type": "string" },
+        "база": { "type": "string" },
+        "версияКонфы": { "type": "string" }
+      }
+    },
+    "итоги": {
+      "type": "object",
+      "required": ["видовВыбрано", "реквизитовТащим", "реквизитовВEAV"],
+      "properties": {
+        "видовВыбрано": { "type": "integer", "minimum": 1 },
+        "реквизитовТащим": { "type": "integer", "minimum": 0 },
+        "реквизитовВEAV": { "type": "integer", "minimum": 0 },
+        "сведенийВсего": { "type": "integer", "minimum": 0 },
+        "сведенийТащим": { "type": "integer", "minimum": 0 },
+        "сведенийВРС": { "type": "integer", "minimum": 0 },
+        "предупреждений": { "type": "integer" },
+        "коллизийРазрешено": { "type": "integer" }
+      }
+    },
+    "виды": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["вид", "справочник", "флаги", "дефолтныеПоля", "реквизиты", "остаютсяВEAV", "допСведения", "eavХвост"],
+        "properties": {
+          "вид": {
+            "type": "object",
+            "required": ["uuid", "наименование"],
+            "properties": {
+              "uuid": { "type": "string", "minLength": 36, "maxLength": 36 },
+              "код": { "type": "string" },
+              "наименование": { "type": "string", "minLength": 1 },
+              "родитель": { "type": "string" }
+            }
+          },
+          "справочник": {
+            "type": "object",
+            "required": ["имя", "синоним"],
+            "properties": {
+              "имя": { "type": "string", "pattern": "^[А-Яа-яЁёA-Za-z_][А-Яа-яЁёA-Za-z0-9_]{0,63}$" },
+              "синоним": { "type": "string", "minLength": 1 }
+            }
+          },
+          "классификатор": {
+            "type": "object",
+            "required": ["реквизит", "тип", "значение"],
+            "properties": {
+              "реквизит": { "type": "string" },
+              "тип": { "type": "string" },
+              "значение": { "type": "string", "minLength": 36, "maxLength": 36 }
+            }
+          },
+          "флаги": { "type": "object" },
+          "дефолтныеПоля": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["тащить", "источникФлага"],
+              "anyOf": [
+                { "required": ["имя"] },
+                { "required": ["тч"] }
+              ],
+              "properties": {
+                "имя": { "type": "string", "pattern": "^[А-Яа-яЁёA-Za-z_][А-Яа-яЁёA-Za-z0-9_]{0,63}$" },
+                "тч": { "type": "string", "pattern": "^[А-Яа-яЁёA-Za-z_][А-Яа-яЁёA-Za-z0-9_]{0,63}$" },
+                "тащить": { "type": "boolean" },
+                "источникФлага": { "type": "string" },
+                "статистика": { "type": "object" }
+              }
+            }
+          },
+          "реквизиты": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["свойство", "имяПВХ", "заголовок", "имяРеквизита", "типы"],
+              "properties": {
+                "свойство": { "type": "string", "minLength": 36, "maxLength": 36 },
+                "имяПВХ": { "type": "string" },
+                "заголовок": { "type": "string", "minLength": 1 },
+                "имяРеквизита": { "type": "string", "pattern": "^[А-Яа-яЁёA-Za-z_][А-Яа-яЁёA-Za-z0-9_]{0,63}$" },
+                "типы": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": ["вид"],
+                    "properties": {
+                      "вид": { "type": "string", "enum": ["Ссылка", "Число", "ЧислоНеотрицательное", "Строка", "СтрокаНеограниченная", "Дата", "ДатаВремя", "Булево", "УникальныйИдентификатор"] },
+                      "ссылочныйТип": { "type": "string", "pattern": "^(CatalogRef|DocumentRef|EnumRef|ChartOfCharacteristicTypesRef|DefinedType|Characteristic|BusinessProcessRef|TaskRef)\\.[А-Яа-яЁёA-Za-z0-9_]+$" },
+                      "длина": { "type": "integer", "minimum": 1 },
+                      "разрядность": { "type": "integer", "minimum": 1, "maximum": 31 },
+                      "точность": { "type": "integer", "minimum": 0 }
+                    }
+                  }
+                },
+                "индексировать": { "type": "boolean" },
+                "обязательный": { "type": "boolean" },
+                "списочный": { "type": "boolean" },
+                "владелецЗначений": { "type": ["string", "null"] },
+                "ссылкаНаМонолит": { "type": "boolean" },
+                "статистика": { "type": "object" },
+                "предупреждения": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "остаютсяВEAV": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["свойство", "имяПВХ", "причина"],
+              "properties": {
+                "свойство": { "type": "string" },
+                "имяПВХ": { "type": "string" },
+                "причина": { "type": "string" },
+                "статистика": { "type": "object" },
+                "предупреждения": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "допСведения": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["свойство", "имяПВХ", "решение"],
+              "properties": {
+                "свойство": { "type": "string", "minLength": 36, "maxLength": 36 },
+                "имяПВХ": { "type": "string" },
+                "решение": { "type": "string", "enum": ["реквизитОбъекта", "остаётсяВРС"] },
+                "заголовок": { "type": "string" },
+                "имяРеквизита": { "type": "string", "pattern": "^[А-Яа-яЁёA-Za-z_][А-Яа-яЁёA-Za-z0-9_]{0,63}$" },
+                "типы": { "type": "array" },
+                "статистика": { "type": "object" },
+                "списочный": { "type": "boolean" },
+                "владелецЗначений": { "type": ["string", "null"] },
+                "причина": { "type": "string" },
+                "предупреждения": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "eavХвост": {
+            "type": "object",
+            "required": ["нуженМеханизмСвойств"],
+            "properties": {
+              "нуженМеханизмСвойств": { "type": "boolean" },
+              "предопределённыйНабор": { "type": "string" }
+            }
+          },
+          "нумерация": { "type": "array" },
+          "стороны": { "type": "array" },
+          "ролиФайлов": { "type": "array" },
+          "зависимости": { "type": "array" }
+        }
+      }
+    },
+    "коллизии": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["уровень", "было", "стало", "правило"],
+        "properties": {
+          "уровень": { "type": "string", "enum": ["справочник", "реквизит"] },
+          "вид": { "type": "string" },
+          "было": { "type": "string" },
+          "стало": { "type": "string" },
+          "правило": { "type": "string" }
+        }
+      }
+    },
+    "банкТипов": { "type": "array", "items": { "type": "string" } },
+    "предупрежденияВыбора": { "type": "array", "items": { "type": "string" } }
+  }
+}

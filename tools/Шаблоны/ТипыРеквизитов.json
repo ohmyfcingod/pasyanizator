@@ -1,0 +1,49 @@
+{
+  "_комментарий": "Маппинг «вид типа из карты» → XML-фрагмент внутри <type>. Плейсхолдеры: {{ССЫЛОЧНЫЙТИП}} — полное имя (CatalogRef.X / EnumRef.X / DocumentRef.X / ChartOfCharacteristicTypesRef.X / DefinedType.X / Characteristic.X), {{ДЛИНА}} / {{РАЗРЯДНОСТЬ}} / {{ТОЧНОСТЬ}} / {{ЧАСТИДАТЫ}} — квалификаторы. Составной тип = конкатенация строк types нескольких видов + не более одного квалификатора (правило платформы). Неизвестный вид типа в карте = жёсткий FAIL Test-Карта, не тихий пропуск. Эталоны сняты с Catalogs/ДокументыПредприятия.mdo (86 реквизитов, 30 сигнатур) и клина ПробныйДоговор.",
+  "версия": "1.0",
+  "виды": {
+    "Ссылка": {
+      "types": "      <types>{{ССЫЛОЧНЫЙТИП}}</types>",
+      "квалификаторы": null
+    },
+    "Число": {
+      "types": "      <types>Number</types>",
+      "квалификаторы": "      <numberQualifiers>\n        <precision>{{РАЗРЯДНОСТЬ}}</precision>\n        <scale>{{ТОЧНОСТЬ}}</scale>\n      </numberQualifiers>"
+    },
+    "ЧислоНеотрицательное": {
+      "types": "      <types>Number</types>",
+      "квалификаторы": "      <numberQualifiers>\n        <precision>{{РАЗРЯДНОСТЬ}}</precision>\n        <scale>{{ТОЧНОСТЬ}}</scale>\n        <nonNegative>true</nonNegative>\n      </numberQualifiers>"
+    },
+    "Строка": {
+      "types": "      <types>String</types>",
+      "квалификаторы": "      <stringQualifiers>\n        <length>{{ДЛИНА}}</length>\n      </stringQualifiers>"
+    },
+    "СтрокаНеограниченная": {
+      "types": "      <types>String</types>",
+      "квалификаторы": "      <stringQualifiers/>",
+      "_прим": "неиндексируема; в составном типе запрещена платформой — экстрактор принудительно даёт Строка(500)+WARN"
+    },
+    "Дата": {
+      "types": "      <types>Date</types>",
+      "квалификаторы": "      <dateQualifiers>\n        <dateFractions>Date</dateFractions>\n      </dateQualifiers>"
+    },
+    "ДатаВремя": {
+      "types": "      <types>Date</types>",
+      "квалификаторы": "      <dateQualifiers/>"
+    },
+    "Булево": {
+      "types": "      <types>Boolean</types>",
+      "квалификаторы": null
+    },
+    "УникальныйИдентификатор": {
+      "types": "      <types>UUID</types>",
+      "квалификаторы": null
+    }
+  },
+  "опции": {
+    "обязательный": "    <fillChecking>ShowError</fillChecking>",
+    "индексировать": "    <indexing>Index</indexing>",
+    "параметрыВыбораВладелец": "    <choiceParameterLinks>\n      <name>Отбор.Владелец</name>\n      <field>Catalog.{{ИМЯ_СПРАВОЧНИКА}}.Attribute.{{РЕКВИЗИТ_ВЛАДЕЛЬЦА}}</field>\n    </choiceParameterLinks>",
+    "_прим": "параметрыВыбораВладелец — заготовка для списочных ПВХ-значений (случай 7 маппинга); точный формат отбора по свойству-владельцу уточняется в такте 2 на живом примере"
+  }
+}

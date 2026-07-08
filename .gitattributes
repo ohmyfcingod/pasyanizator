@@ -1,0 +1,25 @@
+# Нормализация окончаний строк и защита бинарных файлов.
+
+# По умолчанию — авто-нормализация текста (в репозитории LF, checkout по платформе).
+* text=auto
+
+# Бинарники НЕ трогать (иначе autocrlf может повредить, например, .epf).
+*.epf binary
+*.erf binary
+*.cf  binary
+*.cfe binary
+*.dt  binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+# 1С-исходники, скрипты и данные — текст.
+*.bsl  text
+*.mdo  text
+*.form text
+*.tpl  text
+*.ps1  text
+*.json text
+*.tsv  text
+*.md   text

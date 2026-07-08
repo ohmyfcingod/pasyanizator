@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ExternalDataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a1b20347-5e11-4d02-9c30-7f4a8e6d1001">
+  <producedTypes>
+    <objectType typeId="a1b20347-5e11-4d02-9c30-7f4a8e6d1002" valueTypeId="a1b20347-5e11-4d02-9c30-7f4a8e6d1003"/>
+  </producedTypes>
+  <name>ПасьянизаторЭкстрактор</name>
+  <synonym>
+    <key>ru</key>
+    <value>Пасьянизатор: экстрактор EAV-карты</value>
+  </synonym>
+  <comment>Пасьянизатор: экстрактор EAV-карты видов документов (UI-витрина)</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <defaultForm>ExternalDataProcessor.ПасьянизаторЭкстрактор.Form.Витрина</defaultForm>
+  <tabularSections uuid="16177786-f6cb-4f63-a83d-819aff1c6655">
+    <producedTypes>
+      <objectType typeId="1e325a0e-0ae5-4375-902a-4a80677ac498" valueTypeId="b497d81e-0a0c-45c8-8d84-1bbc8c3e7af7"/>
+      <rowType typeId="5f49f3f8-03e1-4ed4-9a21-7ebd7fb94d32" valueTypeId="db6168de-51db-45e6-bb45-da215202716b"/>
+    </producedTypes>
+    <name>ТаблицаВидов</name>
+    <attributes uuid="97686a6b-6782-4d8c-9903-979ac67cef06">
+      <name>Вид</name>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>150</length>
+        </stringQualifiers>
+      </type>
+    </attributes>
+    <attributes uuid="ed9816cf-7c98-4142-9312-c0d54a2d1038">
+      <name>Реквизитов</name>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>10</precision>
+        </numberQualifiers>
+      </type>
+    </attributes>
+    <attributes uuid="d0d58fc4-8e2e-4193-bcb9-049b14d2268c">
+      <name>Документов</name>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>10</precision>
+        </numberQualifiers>
+      </type>
+    </attributes>
+    <attributes uuid="a1b20347-5e11-4d02-9c30-7f4a8e6d1020">
+      <name>Выгружать</name>
+      <type>
+        <types>Boolean</types>
+      </type>
+    </attributes>
+  </tabularSections>
+  <forms uuid="0eb45125-8239-4a19-9dfb-c78156d03db7">
+    <name>Витрина</name>
+    <synonym>
+      <key>ru</key>
+      <value>Пасьянизатор: витрина видов</value>
+    </synonym>
+  </forms>
+</mdclass:ExternalDataProcessor>
